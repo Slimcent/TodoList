@@ -1,11 +1,14 @@
-﻿namespace TodoList.Moblie
+﻿using TodoList.Moblie.ViewModel;
+
+namespace TodoList.Moblie
 {
     public partial class MainPage : ContentPage
     {
         
-        public MainPage()
+        public MainPage(MainViewModel vm)
         {
             InitializeComponent();
+            BindingContext = vm;
         }
     }
 }

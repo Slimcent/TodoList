@@ -1,4 +1,7 @@
-﻿namespace TodoList.Moblie
+﻿using CommunityToolkit.Maui;
+using TodoList.Moblie.ViewModel;
+
+namespace TodoList.Moblie
 {
     public static class MauiProgram
     {
@@ -12,6 +15,10 @@
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+
+            builder.UseMauiApp<App>().UseMauiCommunityToolkit();
+            builder.Services.AddSingleton<MainPage>();
+            builder.Services.AddSingleton<MainViewModel>();
 
             return builder.Build();
         }
