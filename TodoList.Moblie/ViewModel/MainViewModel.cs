@@ -8,9 +8,12 @@ namespace TodoList.Moblie.ViewModel
 {
     public partial class MainViewModel : ObservableObject
     {
-        public MainViewModel()
+        IConnectivity connectivity;
+
+        public MainViewModel(IConnectivity connectivity)
         {
             Items = new ObservableCollection<string>();
+            this.connectivity = connectivity;
         }
 
         [ObservableProperty]
@@ -20,16 +23,23 @@ namespace TodoList.Moblie.ViewModel
         ObservableCollection<string> items;
 
         [ICommand]
-        void Add()
+        async void Add()
         {
             if(string.IsNullOrWhiteSpace(Text))
                 return;
+
+            if(connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+               await Shell.Current.DisplayAlert("internet Error", "No internet", "Ok");
+
+                return;
+            }
 
             if(Items.Any(x => x.Contains(Text)))
             {
                 IToast toast = Toast.Make($"{Text} already exists", ToastDuration.Short, 12
                 );
-                toast.Show();
+                await toast.Show();
 
                 Text = string.Empty;
                 return;
@@ -44,6 +54,12 @@ namespace TodoList.Moblie.ViewModel
         {
             if(Items.Contains(s))
                 Items.Remove(s);
+        }
+
+        [ICommand]
+        async Task Tap(string s)
+        {
+            await Shell.Current.GoToAsync($"{nameof(DetailPage)}?Text={s}");
         }
     }
 }

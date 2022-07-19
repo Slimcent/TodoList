@@ -17,8 +17,14 @@ namespace TodoList.Moblie
                 });
 
             builder.UseMauiApp<App>().UseMauiCommunityToolkit();
+
             builder.Services.AddSingleton<MainPage>();
             builder.Services.AddSingleton<MainViewModel>();
+
+            builder.Services.AddTransient<DetailPage>();
+            builder.Services.AddTransient<DetailViewModel>();
+
+            builder.Services.AddSingleton<IConnectivity>(Connectivity.Current);
 
             return builder.Build();
         }
